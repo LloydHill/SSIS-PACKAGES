@@ -1,0 +1,1846 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/3/2014 3:36:47 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="BILL-WIN7"
+  DTS:CreatorName="CLEARWATER-FL\bill.jaroszek"
+  DTS:DTSID="{FB9CBD43-B8B5-492B-95E1-4E49C931F72C}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.4259.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="PingFuelPumps"
+  DTS:PackageType="5"
+  DTS:VersionBuild="214"
+  DTS:VersionGUID="{246AEBDA-5AE7-4494-B8F4-8BDD2976D5D5}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{F603491E-E8BC-449C-8757-21E9C8DFEAC2}"
+      DTS:ObjectName="MSB-DB-PRD.fleet">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=MSB-DB-PRD;Initial Catalog=fleet;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SMTP Connection Manager]"
+      DTS:CreationName="SMTP"
+      DTS:DTSID="{4CEB676B-E9B2-40EF-8E3A-BD6395777EAC}"
+      DTS:ObjectName="SMTP Connection Manager">
+      <DTS:ObjectData>
+        <SmtpConnectionManager
+          ConnectionString="SmtpServer=mailit.myclearwater.com;UseWindowsAuthentication=True;EnableSsl=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{579A2CC1-F96B-4F76-8A61-81D208513816}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="PINGRESULTS">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Delete PumpIPStatus"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E7E27691-702B-4D93-AA6E-74CEF4848CAE}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Delete PumpIPStatus"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{F603491E-E8BC-449C-8757-21E9C8DFEAC2}"
+          SQLTask:SqlStatementSource="DELETE FROM PumpIPstatus" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Ping Fuel Pumps"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{1A13C09F-60A5-4F4F-A4DB-CF79CC3DB14C}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Ping Fuel Pumps">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          BLOBTempStoragePath=""
+          bufferTempStoragePath=""
+          engineThreads="5"
+          version="1">
+          <components>
+            <component
+              refId="Package\Ping Fuel Pumps\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true"
+              validateExternalMetadata="False">
+              <inputs>
+                <input
+                  refId="Package\Ping Fuel Pumps\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\Data Conversion.Inputs[Data Conversion Input].Columns[IP]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="IP"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[IP]" />
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\Data Conversion.Inputs[Data Conversion Input].Columns[Pump]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Pump"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[Pump]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Ping Fuel Pumps\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of IP]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of IP]"
+                      name="Copy of IP"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[IP]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Pump]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of Pump]"
+                      name="Copy of Pump"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[Pump]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Ping Fuel Pumps\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Ping Fuel Pumps\OLE DB Command"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Executes an SQL command for each row in a dataset."
+              name="OLE DB Command"
+              usesDispositions="true"
+              validateExternalMetadata="False"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">INSERT INTO [fleet].[dbo].[PumpIPstatus]
+           ([IP],[Pump],[Status],[PingDate])
+     VALUES
+          (?,?,?,?)</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Ping Fuel Pumps\OLE DB Command.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+                  connectionManagerRefId="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].Columns[PingIP]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PingIP"
+                      externalMetadataColumnId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingIP]" />
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].Columns[PingPump]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PingPump"
+                      externalMetadataColumnId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingPump]" />
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].Columns[PingStatus]"
+                      cachedDataType="bool"
+                      cachedName="PingStatus"
+                      externalMetadataColumnId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingStatus]" />
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].Columns[PingDate]"
+                      cachedDataType="date"
+                      cachedName="PingDate"
+                      externalMetadataColumnId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="bool"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="dbTimeStamp"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Ping Fuel Pumps\OLE DB Command.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Ping Fuel Pumps\OLE DB Command.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Ping Fuel Pumps\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Pumps]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Ping Fuel Pumps\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+                  connectionManagerRefId="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[IP]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IP]"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[IP]"
+                      name="IP"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[Pump]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Pump]"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[Pump]"
+                      name="Pump"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IP]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="IP" />
+                    <externalMetadataColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Pump]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Pump" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IP]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IP]"
+                      name="IP" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Pump]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Pump]"
+                      name="Pump" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Ping Fuel Pumps\Script Component"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Executes a custom script.;Microsoft Corporation;Microsoft SqlServer v9; © 2004 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Executes a custom script."
+              name="Script Component"
+              validateExternalMetadata="False"
+              version="10">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="15">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ScriptComponent_1e6ac8119b3d494e989e160a63aad643.vbproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-16"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{c5821c2a-e550-4127-9351-7c4603a91a0f}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>My Project</AppDesignerFolder>
+    <RootNamespace>ScriptComponent_1e6ac8119b3d494e989e160a63aad643</RootNamespace>
+    <AssemblyName>ScriptComponent_1e6ac8119b3d494e989e160a63aad643</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- This sections specifies references for the project. -->
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <!-- Visual Basic supports Importing namespaces (equivalent to using statements in C#).-->
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="My Project\" />
+  </ItemGroup>
+  <!-- Include the build rules for a VB project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="SSIS_SC130" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="vb" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="SSIS_SC130" IconIndex=""></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC130</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Compile Include="ScriptMain.vb" />
+    <Compile Include="BufferWrapper.vb" />
+    <Compile Include="ComponentWrapper.vb" />
+  </ItemGroup>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.vb]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+' Microsoft SQL Server Integration Services buffer wrappers
+' This module defines classes for accessing data flow buffers
+' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+
+
+Option Strict Off   ' This allows usage of PipelineBuffer typed accessors.
+
+Imports System
+Imports System.Data
+Imports Microsoft.SqlServer.Dts.Pipeline
+Imports Microsoft.SqlServer.Dts.Pipeline.Wrapper
+
+<CLSCompliant(False)> _
+Public Class Input0Buffer
+    Inherits ScriptBuffer
+
+    Public Sub New(ByVal Buffer As PipelineBuffer, ByVal BufferColumnIndexes As Integer(), ByVal OutputMap As OutputNameMap)
+        MyBase.New(Buffer, BufferColumnIndexes, OutputMap)
+    End Sub
+
+    Public ReadOnly Property [IP]() As String
+        Get
+            Return Buffer.GetString(Me.BufferColumnIndexes(0))
+        End Get
+    End Property
+    Public ReadOnly Property [IP_IsNull] As Boolean
+        Get
+            Return IsNull(0)
+        End Get
+    End Property
+
+    Public ReadOnly Property [Pump]() As String
+        Get
+            Return Buffer.GetString(Me.BufferColumnIndexes(1))
+        End Get
+    End Property
+    Public ReadOnly Property [Pump_IsNull] As Boolean
+        Get
+            Return IsNull(1)
+        End Get
+    End Property
+
+    Public Overloads Function NextRow() As Boolean
+        NextRow = MyBase.NextRow()
+    End Function
+
+    Public Overloads Function EndOfRowset() As Boolean
+        EndOfRowset = MyBase.EndOfRowset
+    End Function
+
+End Class
+
+<CLSCompliant(False)> _
+Public Class Output0Buffer
+    Inherits ScriptBuffer
+
+    Public Sub New(ByVal Buffer As PipelineBuffer, ByVal BufferColumnIndexes As Integer(), ByVal OutputMap As OutputNameMap)
+        MyBase.New(Buffer, BufferColumnIndexes, OutputMap)
+    End Sub
+
+    Public WriteOnly Property [PingStatus]() As Boolean
+        Set
+            Me(0) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [PingStatus_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(0)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [PingIP]() As String
+        Set
+            Me(1) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [PingIP_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(1)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [PingDate]() As DateTime
+        Set
+            Me(2) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [PingDate_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(2)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [PingPump]() As String
+        Set
+            Me(3) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [PingPump_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(3)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public Overloads Sub AddRow()
+        MyBase.AddRow()
+    End Sub
+
+    Public Overloads Sub SetEndOfRowset()
+        MyBase.SetEndOfRowset()
+    End Sub
+
+    Public Overloads Function EndOfRowset() As Boolean
+        EndOfRowset = MyBase.EndOfRowset
+    End Function
+
+End Class
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ScriptMain.vb]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Imports System
+Imports System.Data
+Imports System.Math
+Imports Microsoft.SqlServer.Dts.Pipeline.Wrapper
+Imports Microsoft.SqlServer.Dts.Runtime.Wrapper
+Imports system.net.networkinformation
+'Imports System.ThreadingModule
+
+
+<Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute> _
+<CLSCompliant(False)> _
+Public Class ScriptMain
+    Inherits UserComponent
+    Public Overrides Sub Input0_ProcessInputRow(ByVal Row As Input0Buffer)
+        Try
+            '            Dim _WaitBetweenPings As New Threading.ManualResetEvent(False)
+            'Pumps as of 3/2014:
+            ' D1...172.18.18.41  CNG1.172.18.18.141
+            ' D2...172.18.18.42  CNG2.172.18.18.142
+            ' D3...172.18.18.43  CNG3.172.18.18.143
+            ' D4...172.18.18.44  CNG4.172.18.18.144
+            ' U5...172.18.18.45  CNG5.172.18.18.145
+            ' U6...172.18.18.46  CNG6.172.18.18.146
+            ' U7...172.18.18.48  CNG7.172.18.18.147
+            ' U8...172.18.18.47  CNG8.172.18.18.148
+            Dim MyPing As New System.Net.NetworkInformation.Ping
+            Dim Myreply As System.Net.NetworkInformation.PingReply
+            Me.Output0Buffer.AddRow()
+            Try
+                Myreply = MyPing.Send(Row.IP.ToString.ToString)
+                Me.Output0Buffer.PingPump = Row.Pump.ToString & "Pinging..."
+                Me.Output0Buffer.PingIP = Row.IP.ToString
+                Me.Output0Buffer.PingDate = DateTime.Parse(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"))
+                Select Case Myreply.RoundtripTime
+                    Case 0
+                        Me.Output0Buffer.PingPump = Row.Pump.ToString & " Offline."
+                        Me.Output0Buffer.PingStatus = False
+                    Case Else
+                        Me.Output0Buffer.PingPump = Row.Pump.ToString & " " & Myreply.RoundtripTime.ToString & "ms"
+                        Me.Output0Buffer.PingStatus = True
+                End Select
+                '                _WaitBetweenPings.WaitOne()
+                '                _WaitBetweenPings.Set()     ' Allow next thread to proceed.
+            Catch ex As Exception
+                Me.Output0Buffer.PingPump = Row.Pump.ToString & "There was an Error in ScriptMain of DataFlow Task in PingFuelPumps SSIS."
+                Me.Output0Buffer.PingIP = Row.IP.ToString
+                Me.Output0Buffer.PingDate = DateTime.Parse(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"))
+            End Try
+        Catch ex As Exception
+
+        End Try
+    End Sub
+End Class
+
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.vb]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+' Microsoft SQL Server Integration Services component wrapper
+' This module defines the base class for your component
+' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+
+Imports System
+Imports System.Data
+Imports Microsoft.SqlServer.Dts.Pipeline
+Imports Microsoft.SqlServer.Dts.Pipeline.Wrapper
+Imports Microsoft.SqlServer.Dts.Runtime.Wrapper
+
+<CLSCompliant(False)> _
+Public Class UserComponent
+    Inherits ScriptComponent
+
+    Public Connections As New Connections(Me)
+    Public Variables As New Variables(Me)
+
+    Public Output0Buffer As Output0Buffer
+
+    Dim InputsFinished As Integer = 0
+
+    Public Overrides Sub ProcessInput(ByVal InputID As Integer, ByVal InputName As String, ByVal Buffer As PipelineBuffer, ByVal OutputMap As OutputNameMap)
+
+        If InputName.Equals("Input 0", StringComparison.Ordinal) Then
+            Input0_ProcessInput(New Input0Buffer(Buffer, GetColumnIndexes(InputID), OutputMap))
+        End If
+
+        If Buffer.EndOfRowset Then
+            InputsFinished = InputsFinished + 1
+            If InputsFinished = 1 Then
+                FinishOutputs()
+                MarkOutputsFinished()
+            End If
+        End If
+
+    End Sub
+
+    Public Overridable Sub FinishOutputs()
+    End Sub
+
+    Private Sub MarkOutputsFinished()
+
+        If Output0Buffer IsNot Nothing Then
+            Output0Buffer.SetEndOfRowset
+            Output0Buffer = Nothing
+        End If
+
+    End Sub
+
+    Public Overrides Sub PrimeOutput(ByVal Outputs As Integer, ByVal OutputIDs() As Integer, ByVal Buffers() As PipelineBuffer, ByVal OutputMap As OutputNameMap)
+
+        For I As Integer = 0 To Outputs - 1
+            If OutputIDs(I) = GetOutputID(OutputMap, "Output 0") Then
+                Output0Buffer = New Output0Buffer(Buffers(I), GetColumnIndexes(OutputIDs(I)), OutputMap)
+            End If
+        Next
+
+        CreateNewOutputRows()
+
+    End Sub
+
+    Public Overridable Sub CreateNewOutputRows()
+    End Sub
+
+    Public Overridable Sub Input0_ProcessInput(ByVal Buffer As Input0Buffer)
+
+        While Buffer.NextRow()
+            Input0_ProcessInputRow(Buffer)
+        End While
+
+    End Sub
+
+    Public Overridable Sub Input0_ProcessInputRow(ByVal Row As Input0Buffer)
+
+    End Sub
+
+End Class
+
+<CLSCompliant(False)> _
+Public Class Connections
+
+    Dim ParentComponent As ScriptComponent
+
+    <CLSCompliant(False)> _
+    Public Sub New(ByVal Component As ScriptComponent)
+        ParentComponent = Component
+    End Sub
+
+    Public ReadOnly Property Connection() As IDTSConnectionManager100
+        Get
+            Return ParentComponent.ComponentMetaData.RuntimeConnectionCollection.GetRuntimeConnectionByName("Connection").ConnectionManager
+        End Get
+    End Property
+
+End Class
+
+<CLSCompliant(False)> _
+Public Class Variables
+
+    Dim ParentComponent As ScriptComponent
+
+    <CLSCompliant(False)> _
+    Public Sub New(ByVal Component As ScriptComponent)
+        ParentComponent = Component
+    End Sub
+
+End Class
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:CodeName>ScriptComponent_1e6ac8119b3d494e989e160a63aad643</msb:CodeName>
+		<msb:Language>msBuild</msb:Language>
+		<msb:DisplayName>ScriptComponent_1e6ac8119b3d494e989e160a63aad643</msb:DisplayName>
+		<msb:ProjectId>{8DE5E0EB-CF67-4B9E-8B0E-B83B79C74483}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="ScriptComponent_1e6ac8119b3d494e989e160a63aad643.vbproj"/>
+		<msb:File Include="ComponentWrapper.vb"/>
+		<msb:File Include="ScriptMain.vb"/>
+		<msb:File Include="BufferWrapper.vb"/>
+	</msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="escaped">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String">ScriptComponent_1e6ac8119b3d494e989e160a63aad643.dll</arrayElement>
+                    <arrayElement
+                      dataType="System.String">TVqQAAMAAAAEAAAA_x002F__x002F_8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v_x000D__x000A_ZGUuDQ0KJAAAAAAAAABQRQAATAEDAKdZmFoAAAAAAAAAAOAAIiALAVAAACIAAAAGAAAAAAAAakAA_x000D__x000A_AAAgAAAAYAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACgAAAAAgAAAAAAAAMAQIUAABAA_x000D__x000A_ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAABhAAABPAAAAAGAAAEgDAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAIAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAcCAAAAAgAAAAIgAAAAIA_x000D__x000A_AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAEgDAAAAYAAAAAQAAAAkAAAAAAAAAAAAAAAAAABAAABA_x000D__x000A_LnJlbG9jAAAMAAAAAIAAAAACAAAAKAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABM_x000D__x000A_QAAAAAAAAEgAAAACAAUAjCUAAIwaAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKA8AAAoqHgIoEAAACiqmcxEAAAqAAQAABHMSAAAKgAIA_x000D__x000A_AARzEwAACoADAAAEcxQAAAqABAAABCoufgEAAARvFQAACioufgIAAARvFgAACioufgMAAARvFwAA_x000D__x000A_CioufgQAAARvGAAACioeAigdAAAGKgAAGzAFAHMBAAABAAARcxkAAAoKAnsHAAAEbxoAAAYGA28L_x000D__x000A_AAAGbxoAAApvGgAACm8bAAAKCwJ7BwAABANvDQAABm8aAAAKcgEAAHAoHAAACm8YAAAGAnsHAAAE_x000D__x000A_A28LAAAGbxoAAApvFAAABgJ7BwAABCgdAAAKDBICchcAAHAoHgAACigfAAAKbxYAAAYHbyAAAAoN_x000D__x000A_CS0uAnsHAAAEA28NAAAGbxoAAApyPwAAcCgcAAAKbxgAAAYCewcAAAQWbxIAAAYrQAJ7BwAABANv_x000D__x000A_DQAABm8aAAAKclMAAHAHbyAAAAoTBBIEKCEAAApyVwAAcCgiAAAKbxgAAAYCewcAAAQXbxIAAAbe_x000D__x000A_ZyUoIwAAChMFAnsHAAAEA28NAAAGbxoAAApyXQAAcCgcAAAKbxgAAAYCewcAAAQDbwsAAAZvGgAA_x000D__x000A_Cm8UAAAGAnsHAAAEKB0AAAoMEgJyFwAAcCgeAAAKKB8AAApvFgAABigkAAAK3gDeDyUoIwAAChMG_x000D__x000A_KCQAAAreACoAQTQAAAAAAAARAAAA6QAAAPoAAABnAAAAGwAAAQAAAAAAAAAAYwEAAGMBAAAPAAAA_x000D__x000A_GwAAASoCAwQFKCUAAAoqUgJ7JgAACgJ7JwAAChaUbygAAAoqIgIWKCkAAAoqUgJ7JgAACgJ7JwAA_x000D__x000A_CheUbygAAAoqIgIXKCkAAAoqABMwAQAJAAAAAgAAEQIoKgAACgoGKgAAABMwAQAJAAAAAgAAEQIo_x000D__x000A_KwAACgoGKjoCFgOMJAAAASgsAAAKKloDLAgCFigtAAAKKnLwAABwcy4AAAp6JgIXAygsAAAKKloD_x000D__x000A_LAgCFygtAAAKKnLwAABwcy4AAAp6OgIYA4waAAABKCwAAAoqWgMsCAIYKC0AAAoqcvAAAHBzLgAA_x000D__x000A_CnomAhkDKCwAAAoqWgMsCAIZKC0AAAoqcvAAAHBzLgAACnoeAigvAAAKKh4CKDAAAAoqABMwAQAJ_x000D__x000A_AAAAAgAAEQIoKwAACgoGKpoCKDEAAAoCAnMlAAAGfQUAAAQCAnMnAAAGfQYAAAQCFn0IAAAEKhMw_x000D__x000A_BABPAAAAAAAAAARyjQEAcBpvMgAACiwVAgUCAygzAAAKDgRzCgAABm8jAAAGBW80AAAKLCMCAnsI_x000D__x000A_AAAEF9Z9CAAABAJ7CAAABBczDAJvHwAABgIoIAAABioGKm4CewcAAAQsEgJ7BwAABG8bAAAGAhR9_x000D__x000A_BwAABCoAAAATMAUAQQAAAAMAABEDF9oKFgsrLgQHlA4Ecp0BAHAoNQAACjMZAgUHmgIEB5QoMwAA_x000D__x000A_Cg4EcxEAAAZ9BwAABAcX1gsHBjHOAm8iAAAGKkorBwIDbyQAAAYDbw8AAAYt8So6Aig2AAAKAgN9_x000D__x000A_CQAABCqCAnsJAAAEbzcAAApvOAAACnKvAQBwbzkAAApvOgAACio6Aig2AAAKAgN9CgAABCo2AgMo_x000D__x000A_OwAACig8AAAKKh4CKD0AAAoqLtALAAACKD4AAAoqHgIoPwAACioAAAATMAEAFAAAAAQAABECjAUA_x000D__x000A_ABstCCgBAAArCisCAgoGKiID_x002F_hUFAAAbKh4CKDYAAAoqAAAAEzACACgAAAAFAAARAntBAAAKb0IA_x000D__x000A_AAoKBowIAAAbLRIoAgAAKwoCe0EAAAoGb0MAAAoGKkoCKDYAAAoCc0QAAAp9QQAACioAQlNKQgEA_x000D__x000A_AQAAAAAADAAAAHY0LjAuMzAzMTkAAAAABQBsAAAAQAoAACN_x002B_AACsCgAArAoAACNTdHJpbmdzAAAA_x000D__x000A_AFgVAADIAQAAI1VTACAXAAAQAAAAI0dVSUQAAAAwFwAAXAMAACNCbG9iAAAAAAAAAAIAAAFXFaIJ_x000D__x000A_CQ4AAAD6ATMAFgAAAQAAACwAAAAMAAAACwAAADAAAAAeAAAARAAAADEAAAAFAAAABQAAABIAAAAS_x000D__x000A_AAAACAAAAAEAAAAHAAAAAgAAAAMAAAACAAAAAACIBAEAAAAAAAYAcwO5CAYA0AO5CAYAtgL6Bw8A_x000D__x000A_2QgAAAYAJwMWBAoAnwItBwoAdQJyBAoAygJyBA4AUgJJCA4ArgcNCAYAQAP6Bw4A9wKSCA4ADwNT_x000D__x000A_AQYAeQk8BQ4AmgdJCA4AWANTAQYATQI8BQYA4wJzCA4AbwBIBAoAigJLBRIAqQMpAgYAkwM8BQYA_x000D__x000A_QwQ8BQoAEQSRBQoAoQqRBQYADgI8BQYA7gU8BRIACgcpAhYA_x002B_wYpAhIACwYpAhIAxwkpAhoAVgBF_x000D__x000A_BwYAPAQ8BQYAygA8BQ4APgGSCAYAQwU8BQYA3gU8BQYA_x002B_AU8BR4AAQBtBx4AGgBtBx4APQBtBwYA_x000D__x000A_Mgm5CAYAxQE8BQYA2Qc8BQAAAADQAAAAAAABAAEAAAAAAIMFbQolAAEAAQAAAAAArAdtCikAAQAC_x000D__x000A_AAABEACACW0KOQABAAMAAQAAAGgFmQAgAAUACAABAAAA4AaZAHEABQAKAAEAAADtBpkAcQAFABEA_x000D__x000A_AQAAAKkJmQB9AAUAHQABAAAAHgmZADkACQAlAAEAAADoCJkAOQAKACcABQEAADsIAAA5AAsAKAAF_x000D__x000A_AQAAfgAAADkACwAvADEAqQZeATEAgAZmATEAlAZuATEAwgZ2AQYAHgl_x002B_AQYA6AiCAQYA7QaGAQEA_x000D__x000A_aQGKAQEAtwmNAQEAtwmNASEANQomAVAgAAAAAAYY4wcGAAEAWCAAAAAABhjjBwYAAQBgIAAAAAAR_x000D__x000A_GOkHkAABAIogAAAAABMInweRAQEAliAAAAAAEwhzBZYBAQCiIAAAAAATCJYHmwEBAK4gAAAAABMI_x000D__x000A_KwigAQEAuiAAAAAABhjjBwYAAQDEIAAAAADGAk4KpQEBAHgiAAAAAAYY4weUAAIAgyIAAAAABgjt_x000D__x000A_AF4ABQCYIgAAAAAGCL0EtAAFAKEiAAAAAAYIagZeAAUAtiIAAAAABgjxBLQABQDAIgAAAACGAGUK_x000D__x000A_tAAFANgiAAAAAIYAnQm0AAUAeCIAAAAABhjjB5QABQDtIgAAAAAGCE8JKQAIAPwiAAAAAAYIFQUp_x000D__x000A_AAkAEyMAAAAABgj0ABAACgAdIwAAAAAGCMsEKQALADQjAAAAAAYIaAKrAQwAQyMAAAAABgjdBCkA_x000D__x000A_DQBaIwAAAAAGCHMGEAAOAGQjAAAAAAYIAQUpAA8AeyMAAAAAhgBHCgYAEACDIwAAAACGAJoJBgAQ_x000D__x000A_AIwjAAAAAIYAnQm0ABAAoSMAAAAABhjjBwYAEADIIwAAAADGAhwKsQEQACMkAAAAAEYDQQkGABQA_x000D__x000A_JSQAAAAAAQB4AQYAFABEJAAAAADGAikKuwEUACMkAAAAAEYDXgkGABgAkSQAAAAARgMVCqUBGAAj_x000D__x000A_JAAAAABGA04KpQEZAKQkAAAAAAYY4wfHARoAsyQAAAAABgjPBesAGwDUJAAAAAAGGOMHxwEbAOMk_x000D__x000A_AAAAAMYCFwn2ABwA8SQAAAAAxgK5AfsAHQD5JAAAAACDAEoCzQEdAAUlAAAAAMYCMAReAB0AECUA_x000D__x000A_AAAAEQAVAdIBHQAwJQAAAAABAAEB2gEeADklAAAAAAYY4wcGAB8ARCUAAAAAAwigAUoAHwB4JQAA_x000D__x000A_AAAGGOMHBgAfAAAAAQBpCgAAAQAQBwAAAgDyCAAAAwAZBgAAAQAQBwAAAgDyCAAAAwAZBgAAAQAL_x000D__x000A_BAAAAQALBAAAAQALBAAAAQALBAAAAQALBAAAAQALBAAAAQALBAAAAQALBAAAAQDZAAAAAgDpAQAA_x000D__x000A_AwAQBwAABAAZBgAAAQBHCQAAAgDwBwAAAwAqCQAABAAZBgAAAQAQBwAAAQBpCgAAAQDNCQAAAQDN_x000D__x000A_CQAAAQAJBgAAAQCwAQAAAQCwAQkA4wcBABEA4wcGABkA4wcKACkA4wcQADEA4wcVAEEA4wcbAFkA_x000D__x000A_4wcGAGEA4wcGAGkA4wcGAIEA4wchAJEA4wcpAKEA4wcQAKkA4wcGALEA4wcpAEkA4wcGAFEA4wcG_x000D__x000A_AAwA4wcGABQA4wcGABwA4wcGACQA4wcGAAwAoAFKABQAoAFKABwAoAFKACQAoAFKAMEA4wcGAAkB_x000D__x000A_MAReAMEAjAFiAAkBcgloANEAPwpuANEAMARzANEAYgJ4AMkAFwJ_x002B_ABEBMAReAAkBcgmCABkByQeK_x000D__x000A_ABkBtweQAOEA4weUAOEAEAeeAOEA8giiAOkAOQSmAOEAJAWrAOEAZQq0AOEAnQm0AOEAMwW4AOEA_x000D__x000A_KwUBACkB4wcQAOEARwoGAOEAmgkGAPkA4wcGAAkBFwm_x002B_APkABgnGAOkAigm0APkA4QDRAHEA4wcG_x000D__x000A_APkAKAHYADkBrwXeAEEB8wHkAEkBFwfrAFEBAgTxAHEAFwn2AHEAuQH7AIkA1wH_x002F_AHEAMAReAGEB_x000D__x000A_kQEPATQANQomATwA7gNKADwA_x002B_AM9ATwA4wcGACkAYwAWAy4ACwAOAi4AEwAXAi4AGwA2Ai4AIwA_x002F__x000D__x000A_AkAAOwCHAkAAMwCMAkMAKwCbAkMAMwCMAkkAYwAnA2MAKwCbAmMAMwCMAmkAYwA7A4AAOwCHAoMA_x000D__x000A_QwCHAoMASwCHAoMAKwCbAokAYwBIA6AAOwCHAqMAawCHAqMAcwCVAsAAOwCHAsMAcwCVAuAAOwCH_x000D__x000A_AuMAcwCVAgMBcwCVAiMBcwCVAkMBcwCVAmMBMwCMAmMBUwC0AoMBMwCMAoMBWwCVAqAEcwCVAuAE_x000D__x000A_cwCVAgAFMwCMAgAFOwCHAiAFMwCMAiAFOwCHAkAFMwCMAkAFOwCHAmAFMwCMAmAFOwCHAoAFOwCH_x000D__x000A_AqAFOwCHAsAFOwCHAsAFMwCMAuAFOwCHAgAGOwCHAgAGMwCMAk8AsADMAAcBGgEEAAEABgAFAAcA_x000D__x000A_CQAJABEADAASAAAArgfiAQAAhQXnAQAAmgfsAQAAPQjxAQAA_x002F_AD2AQAA0wT6AQAAewb2AQAACQX6_x000D__x000A_AQAAUwn6AQAAGQX6AQAA_x002B_AD2AQAAzwT6AQAAbAL_x002B_AQAA4QT6AQAAdwb2AQAABQX6AQAA0wUDAgAA_x000D__x000A_pAEJAgIABAADAAIABQAFAAIABgAHAAIABwAJAAIACwALAAIADAANAAIADQAPAAIADgARAAEAEgAT_x000D__x000A_AAEAEwAVAAEAFAAXAAEAFQAZAAEAFgAbAAEAFwAdAAEAGAAfAAEAGQAhAAIAJgAjAAIALwAlAC4A_x000D__x000A_NQA8AEMADAEfAS4BNQEEgAAAAAAAAAAAAAAAAAAAAACZAAAABAAAAAAAAAAAAAAAQwFKAQAAAAAE_x000D__x000A_AAAAAAAAAAAAAABDATwFAAAAAAoAAAAAAAAAAAAAAEwBUwEAAAAADQAAAAAAAAAAAAAAVQHXCQAA_x000D__x000A_AAANAAAAAAAAAAAAAABVAfQJAAAAAA0AAAAAAAAAAAAAAFUBIwYAAAAADQAAAAAAAAAAAAAAVQFG_x000D__x000A_BgAAAAALAAQADAAEAAAAEAAYAP8AAAAQAFkA_x002F_wAAAAAAWwD_x002F_AIEAFQGBADgBAAAASURUU0NvbXBv_x000D__x000A_bmVudE1ldGFEYXRhMTAwAElEVFNSdW50aW1lQ29ubmVjdGlvbkNvbGxlY3Rpb24xMDAASURUU1J1_x000D__x000A_bnRpbWVDb25uZWN0aW9uMTAwAElEVFNDb25uZWN0aW9uTWFuYWdlcjEwMABDb250ZXh0VmFsdWVg_x000D__x000A_MQBUaHJlYWRTYWZlT2JqZWN0UHJvdmlkZXJgMQBTY3JpcHRDb21wb25lbnRfMWU2YWM4MTE5YjNk_x000D__x000A_NDk0ZTk4OWUxNjBhNjNhYWQ2NDMASW50NjQAPE1vZHVsZT4ASW5wdXRJRABHZXRPdXRwdXRJRABn_x000D__x000A_ZXRfSVAAc2V0X1BpbmdJUABUAERpc3Bvc2VfX0luc3RhbmNlX18AQ3JlYXRlX19JbnN0YW5jZV9f_x000D__x000A_AGdldF9Db21wb25lbnRNZXRhRGF0YQBQcm9qZWN0RGF0YQBtc2NvcmxpYgBNaWNyb3NvZnQuVmlz_x000D__x000A_dWFsQmFzaWMASW5wdXRzRmluaXNoZWQATWFya091dHB1dHNGaW5pc2hlZABTZW5kAENyZWF0ZUlu_x000D__x000A_c3RhbmNlAGdldF9HZXRJbnN0YW5jZQBpbnN0YW5jZQBHZXRIYXNoQ29kZQBSdW50aW1lVHlwZUhh_x000D__x000A_bmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBJbnB1dE5hbWUAR2V0UnVudGltZUNvbm5lY3Rpb25CeU5h_x000D__x000A_bWUARGF0ZVRpbWUAZ2V0X1JvdW5kdHJpcFRpbWUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlw_x000D__x000A_ZWxpbmUAR2V0VHlwZQBBcHBsaWNhdGlvbkJhc2UAUGFyc2UAc2V0X1BpbmdEYXRlAEVkaXRvckJy_x000D__x000A_b3dzYWJsZVN0YXRlAEhlbHBLZXl3b3JkQXR0cmlidXRlAEdlbmVyYXRlZENvZGVBdHRyaWJ1dGUA_x000D__x000A_RGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRyaWJ1dGUAQ29tVmlzaWJsZUF0_x000D__x000A_dHJpYnV0ZQBTdGFuZGFyZE1vZHVsZUF0dHJpYnV0ZQBIaWRlTW9kdWxlTmFtZUF0dHJpYnV0ZQBU_x000D__x000A_YXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUARGVidWdnZXJIaWRkZW5BdHRyaWJ1dGUATXlHcm91cENv_x000D__x000A_bGxlY3Rpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBDTFNDb21w_x000D__x000A_bGlhbnRBdHRyaWJ1dGUAU1NJU1NjcmlwdENvbXBvbmVudEVudHJ5UG9pbnRBdHRyaWJ1dGUAUnVu_x000D__x000A_dGltZUNvbXBhdGliaWxpdHlBdHRyaWJ1dGUAZ2V0X1ZhbHVlAHNldF9WYWx1ZQBHZXRPYmplY3RW_x000D__x000A_YWx1ZQBQaW5nAFN5c3RlbS5SdW50aW1lLlZlcnNpb25pbmcAVG9TdHJpbmcAR2V0U3RyaW5nAE1h_x000D__x000A_dGgATWljcm9zb2Z0LlZpc3VhbEJhc2ljLk15U2VydmljZXMuSW50ZXJuYWwAU3lzdGVtLkNvbXBv_x000D__x000A_bmVudE1vZGVsAFNjcmlwdENvbXBvbmVudF8xZTZhYzgxMTliM2Q0OTRlOTg5ZTE2MGE2M2FhZDY0_x000D__x000A_My5kbGwAZ2V0X0lQX0lzTnVsbABzZXRfUGluZ0lQX0lzTnVsbABzZXRfUGluZ0RhdGVfSXNOdWxs_x000D__x000A_AGdldF9QdW1wX0lzTnVsbABzZXRfUGluZ1B1bXBfSXNOdWxsAHNldF9QaW5nU3RhdHVzX0lzTnVs_x000D__x000A_bABTZXROdWxsAHNldF9JdGVtAFN5c3RlbQBCb29sZWFuAFN5c3RlbS5Db21wb25lbnRNb2RlbC5E_x000D__x000A_ZXNpZ24AU2NyaXB0TWFpbgBnZXRfQXBwbGljYXRpb24ATXlBcHBsaWNhdGlvbgBTeXN0ZW0uTmV0_x000D__x000A_Lk5ldHdvcmtJbmZvcm1hdGlvbgBnZXRfUnVudGltZUNvbm5lY3Rpb25Db2xsZWN0aW9uAGdldF9D_x000D__x000A_b25uZWN0aW9uAEludmFsaWRPcGVyYXRpb25FeGNlcHRpb24AU3RyaW5nQ29tcGFyaXNvbgBvAE91_x000D__x000A_dHB1dE5hbWVNYXAAT3V0cHV0TWFwAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRFRTUnVudGltZVdyYXAA_x000D__x000A_TWljcm9zb2Z0LlNxbFNlcnZlci5EVFNQaXBlbGluZVdyYXAAZ2V0X1B1bXAAc2V0X1BpbmdQdW1w_x000D__x000A_AG1fQXBwT2JqZWN0UHJvdmlkZXIAbV9Vc2VyT2JqZWN0UHJvdmlkZXIAbV9Db21wdXRlck9iamVj_x000D__x000A_dFByb3ZpZGVyAG1fTXlXZWJTZXJ2aWNlc09iamVjdFByb3ZpZGVyAElucHV0MEJ1ZmZlcgBPdXRw_x000D__x000A_dXQwQnVmZmVyAFBpcGVsaW5lQnVmZmVyAFNjcmlwdEJ1ZmZlcgBnZXRfQ29ubmVjdGlvbk1hbmFn_x000D__x000A_ZXIAU3lzdGVtLkNvZGVEb20uQ29tcGlsZXIATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUnVudGlt_x000D__x000A_ZS5XcmFwcGVyAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlBpcGVsaW5lLldyYXBwZXIAZ2V0X1Vz_x000D__x000A_ZXIAZ2V0X0NvbXB1dGVyAE15Q29tcHV0ZXIAQ2xlYXJQcm9qZWN0RXJyb3IAU2V0UHJvamVjdEVy_x000D__x000A_cm9yAEFjdGl2YXRvcgAuY3RvcgAuY2N0b3IAT3V0cHV0SURzAFN5c3RlbS5EaWFnbm9zdGljcwBN_x000D__x000A_aWNyb3NvZnQuVmlzdWFsQmFzaWMuRGV2aWNlcwBnZXRfV2ViU2VydmljZXMATXlXZWJTZXJ2aWNl_x000D__x000A_cwBNaWNyb3NvZnQuVmlzdWFsQmFzaWMuQXBwbGljYXRpb25TZXJ2aWNlcwBTeXN0ZW0uUnVudGlt_x000D__x000A_ZS5JbnRlcm9wU2VydmljZXMATWljcm9zb2Z0LlZpc3VhbEJhc2ljLkNvbXBpbGVyU2VydmljZXMA_x000D__x000A_U3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlcwBEZWJ1Z2dpbmdNb2RlcwBWYXJpYWJsZXMA_x000D__x000A_QnVmZmVyQ29sdW1uSW5kZXhlcwBHZXRDb2x1bW5JbmRleGVzAEVxdWFscwBDb25uZWN0aW9ucwBC_x000D__x000A_dWZmZXJzAFJ1bnRpbWVIZWxwZXJzAEZpbmlzaE91dHB1dHMAc2V0X1BpbmdTdGF0dXMAQ3JlYXRl_x000D__x000A_TmV3T3V0cHV0Um93cwBDb25jYXQAT2JqZWN0AE15UHJvamVjdABnZXRfRW5kT2ZSb3dzZXQAU2V0_x000D__x000A_RW5kT2ZSb3dzZXQAVXNlckNvbXBvbmVudABQYXJlbnRDb21wb25lbnQAU2NyaXB0Q29tcG9uZW50_x000D__x000A_AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuVHhTY3JpcHQATWljcm9zb2Z0LlNxbFNlcnZlci5QaXBlbGlu_x000D__x000A_ZUhvc3QASW5wdXQwX1Byb2Nlc3NJbnB1dABQcmltZU91dHB1dABtX0NvbnRleHQAZ2V0X05vdwBB_x000D__x000A_ZGRSb3cASW5wdXQwX1Byb2Nlc3NJbnB1dFJvdwBOZXh0Um93AFNjcmlwdENvbXBvbmVudF8xZTZh_x000D__x000A_YzgxMTliM2Q0OTRlOTg5ZTE2MGE2M2FhZDY0My5NeQBQaW5nUmVwbHkAAAAVUABpAG4AZwBpAG4A_x000D__x000A_ZwAuAC4ALgAAJ3kAeQB5AHkALwBNAE0ALwBkAGQAIABIAEgAOgBtAG0AOgBzAHMAABMgAE8AZgBm_x000D__x000A_AGwAaQBuAGUALgAAAyAAAAVtAHMAAICRVABoAGUAcgBlACAAdwBhAHMAIABhAG4AIABFAHIAcgBv_x000D__x000A_AHIAIABpAG4AIABTAGMAcgBpAHAAdABNAGEAaQBuACAAbwBmACAARABhAHQAYQBGAGwAbwB3ACAA_x000D__x000A_VABhAHMAawAgAGkAbgAgAFAAaQBuAGcARgB1AGUAbABQAHUAbQBwAHMAIABTAFMASQBTAC4AAICb_x000D__x000A_SQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkAIABjAGEAbgBuAG8AdAAgAGIAZQAgAHMAZQB0_x000D__x000A_ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcAbgAgAGEAIAB2AGEAbAB1AGUAIAB0AG8A_x000D__x000A_IAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABlAGEAZAAuAAAPSQBuAHAAdQB0ACAAMAAA_x000D__x000A_EU8AdQB0AHAAdQB0ACAAMAAAFUMAbwBuAG4AZQBjAHQAaQBvAG4AAAAAAP5jAwjpZ7dKrVDV_x002F_TRJ_x000D__x000A_np8ABCABAQgDIAABBSABARERBCABAQ4FIAIBDg4FIAEBER0HIAQBDg4ODgQgAQECBhUSMAESDAYV_x000D__x000A_EjABEggGFRIwARI9BhUSMAESLAQgABMADgcHEmESZRFpCgoSbRJtAyAADgUgARJlDgUAAg4ODgQA_x000D__x000A_ABFpBCABDg4FAAERaQ4DIAAKBwAEDg4ODg4FAAEBEm0DAAABCSADARJ1HQgSeQMGEnUDBh0IBCAB_x000D__x000A_DggEIAECCAMHAQIDIAACBSACAQgcByACAg4RgJkFIAEdCAgEBwIICAYAAggSeQ4FIAASgJ0FIAAS_x000D__x000A_gKEGIAESgKUOBSAAEoCBBAABHBwEIAECHAMgAAgHAAESRRGArQQHAR4AAh4ABRABAB4ABAoBHgAE_x000D__x000A_BwETAAYVEjABEwAHBhUSTQETAAYVEk0BEwACEwAECgETAAUgAQETAAi3elxWGTTgiQiwP19_x002F_EdUK_x000D__x000A_OgiJhF3NgIDMkQcGFRIwARIMBwYVEjABEggHBhUSMAESPQcGFRIwARIsAwYSJAMGEigDBhIcAgYI_x000D__x000A_AwYSfQQAABIMBAAAEggEAAASPQQAABIsBSABARIYBSABARFpCSAEAQgOEnUSeQsgBAEIHQgdEnUS_x000D__x000A_eQUgAQESfQQgABJFBxABAR4AHgAHMAEBARAeAAQIABIMBAgAEggECAASPQQIABIsAygADgMoAAIE_x000D__x000A_KAARaQUoABKAgQQoABMACAEACAAAAAAAHgEAAQBUAhZXcmFwTm9uRXhjZXB0aW9uVGhyb3dzAQgB_x000D__x000A_AAIAAAAAAEcBABouTkVURnJhbWV3b3JrLFZlcnNpb249djQuMAEAVA4URnJhbWV3b3JrRGlzcGxh_x000D__x000A_eU5hbWUQLk5FVCBGcmFtZXdvcmsgNAQBAAAACAEAAQAAAAAABQEAAAAAGAEACk15VGVtcGxhdGUI_x000D__x000A_MTEuMC4wLjAAAGEBADRTeXN0ZW0uV2ViLlNlcnZpY2VzLlByb3RvY29scy5Tb2FwSHR0cENsaWVu_x000D__x000A_dFByb3RvY29sEkNyZWF0ZV9fSW5zdGFuY2VfXxNEaXNwb3NlX19JbnN0YW5jZV9fAAAAEAEAC015_x000D__x000A_LkNvbXB1dGVyAAATAQAOTXkuQXBwbGljYXRpb24AAAwBAAdNeS5Vc2VyAAATAQAOTXkuV2ViU2Vy_x000D__x000A_dmljZXMAAEBAAAAAAAAAAAAAAFpAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMQAAAAAAAAAAA_x000D__x000A_AAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD_x002F_JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABAA_x000D__x000A_AAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAAWGAA_x000D__x000A_AOwCAAAAAAAAAAAAAOwCNAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9BO_x002F__x002B__x000D__x000A_AAABAAAAAAAAAAAAAAAAAAAAAAA_x002F_AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEAVgBh_x000D__x000A_AHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAAAAAA_x000D__x000A_sARMAgAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAAAoAgAAAQAwADAAMAAwADAANABi_x000D__x000A_ADAAAAAsAAIAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8AbgAAAAAAIAAAADAACAABAEYA_x000D__x000A_aQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMAAuADAALgAwAC4AMAAAAIoANQABAEkAbgB0AGUAcgBu_x000D__x000A_AGEAbABOAGEAbQBlAAAAUwBjAHIAaQBwAHQAQwBvAG0AcABvAG4AZQBuAHQAXwAxAGUANgBhAGMA_x000D__x000A_OAAxADEAOQBiADMAZAA0ADkANABlADkAOAA5AGUAMQA2ADAAYQA2ADMAYQBhAGQANgA0ADMALgBk_x000D__x000A_AGwAbAAAAAAAKAACAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAIAAAAJIANQABAE8A_x000D__x000A_cgBpAGcAaQBuAGEAbABGAGkAbABlAG4AYQBtAGUAAABTAGMAcgBpAHAAdABDAG8AbQBwAG8AbgBl_x000D__x000A_AG4AdABfADEAZQA2AGEAYwA4ADEAMQA5AGIAMwBkADQAOQA0AGUAOQA4ADkAZQAxADYAMABhADYA_x000D__x000A_MwBhAGEAZAA2ADQAMwAuAGQAbABsAAAAAAA0AAgAAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBv_x000D__x000A_AG4AAAAwAC4AMAAuADAALgAwAAAAOAAIAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBpAG8A_x000D__x000A_bgAAADAALgAwAC4AMAAuADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAMAAAAbDAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_x000D__x000A_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Comma separated list of variables to be made available for read access"
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="Comma separated list of variables to be made available for read and write access"
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">ScriptComponent_1e6ac8119b3d494e989e160a63aad643</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">VisualBasic</property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataShaChecksum"
+                  typeConverter="NOTBROWSABLE">03fe6e039e4beafbbcd5e3a86336d0109e187857</property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum"
+                  typeConverter="NOTBROWSABLE">4b860f50c6652d2c72b32a1ca6f4566d</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Ping Fuel Pumps\Script Component.Connections[Connection]"
+                  connectionManagerID="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+                  connectionManagerRefId="Package.ConnectionManagers[MSB-DB-PRD.fleet]"
+                  name="Connection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Ping Fuel Pumps\Script Component.Inputs[Input 0]"
+                  hasSideEffects="true"
+                  name="Input 0">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\Script Component.Inputs[Input 0].Columns[IP]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="IP"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[IP]" />
+                    <inputColumn
+                      refId="Package\Ping Fuel Pumps\Script Component.Inputs[Input 0].Columns[Pump]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Pump"
+                      lineageId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output].Columns[Pump]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0]"
+                  hasSideEffects="true"
+                  name="Output 0">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingStatus]"
+                      dataType="bool"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingStatus]"
+                      name="PingStatus" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingIP]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingIP]"
+                      name="PingIP" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingDate]"
+                      dataType="date"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingDate]"
+                      name="PingDate" />
+                    <outputColumn
+                      refId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingPump]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0].Columns[PingPump]"
+                      name="PingPump" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Ping Fuel Pumps.Paths[Data Conversion Output]"
+              endId="Package\Ping Fuel Pumps\Script Component.Inputs[Input 0]"
+              name="Data Conversion Output"
+              startId="Package\Ping Fuel Pumps\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Ping Fuel Pumps.Paths[OLE DB Source Output]"
+              endId="Package\Ping Fuel Pumps\Data Conversion.Inputs[Data Conversion Input]"
+              name="OLE DB Source Output"
+              startId="Package\Ping Fuel Pumps\OLE DB Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Ping Fuel Pumps.Paths[Output 0]"
+              endId="Package\Ping Fuel Pumps\OLE DB Command.Inputs[OLE DB Command Input]"
+              name="Output 0"
+              startId="Package\Ping Fuel Pumps\Script Component.Outputs[Output 0]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{8FD4DFFC-4C9E-4859-B4B9-CCCD9B29D08F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:DTSID="{6BF9CCE4-C4C7-44C8-82D3-75E8C559C8E2}"
+          DTS:IncludeInDebugDump="2345"
+          DTS:Namespace="User"
+          DTS:ObjectName="MessageContent">
+          <DTS:VariableValue
+            DTS:DataType="8"
+            xml:space="preserve"></DTS:VariableValue>
+        </DTS:Variable>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:DTSID="{153025EF-4358-41B6-9C16-8B52C1C85879}"
+          DTS:IncludeInDebugDump="2345"
+          DTS:Namespace="User"
+          DTS:ObjectName="MessageSubject">
+          <DTS:VariableValue
+            DTS:DataType="8"
+            xml:space="preserve"></DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\Build Email"
+          DTS:CreationName="Microsoft.ScriptTask"
+          DTS:Description="Script Task"
+          DTS:DTSID="{EE3732CA-76CF-4213-81D5-A67AB0AAE7A4}"
+          DTS:ExecutableType="Microsoft.ScriptTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Build Email"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ScriptProject
+              Name="ScriptTask_71ecaaf42f7648398970092f65769e9a"
+              VSTAMajorVersion="14"
+              VSTAMinorVersion="0"
+              Language="VisualBasic"
+              ReadWriteVariables="MessageSubject,MessageContent">
+              <ProjectItem
+                Name="ScriptMain.vb"
+                Encoding="UTF8"><![CDATA[Imports System
+Imports System.Data
+Imports System.Math
+Imports Microsoft.SqlServer.Dts.Runtime
+<Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute> _
+<System.CLSCompliantAttribute(False)> _
+Partial Public Class ScriptMain
+	Inherits Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+
+	Enum ScriptResults
+		Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success
+		Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+	End Enum
+    Public Sub Main()
+        Dim messageSubject As String = "Automatic Notification - General Services Fuel Pump Connection Status"
+        Dim message As String = "General Services Fuel Pump Connection Status" & vbCrLf & vbCrLf & vbCrLf
+        Dts.Variables("MessageSubject").Value = messageSubject
+        Dim cnt As Integer
+        '
+        Dim con2 As New SqlClient.SqlConnection("data source=msb-db-prod; initial catalog=Fleet; integrated security=SSPI;")
+        con2.Open()
+        '
+        Dim cmd2 As New SqlClient.SqlCommand("SELECT * FROM Pumps", con2)
+        Dim dr2 As SqlClient.SqlDataReader = cmd2.ExecuteReader
+        While dr2.Read
+            ' Get number of pumps for next SQL.
+            cnt = cnt + 1
+        End While
+
+        If cnt > 0 Then
+            Dim con As New SqlClient.SqlConnection("data source=msb-db-prod; initial catalog=Fleet; integrated security=SSPI;")
+            con.Open()        '
+            ' This was originally designed to grab the LATEST records.  
+            ' It did not always work so DELETE FROM PUMPIPSTATUS task was added to the project.
+            ' Only the current Pings will ever be in the table.
+            Dim cmd As New SqlClient.SqlCommand("SELECT TOP " & cnt.ToString & " " & _
+                "Pump, CONVERT(CHAR(26),PingDate,120) as PingDate, IP, Status " & _
+                "FROM  PumpIPstatus " & _
+                " GROUP BY Pump, PingDate, IP,  Status " & _
+                " ORDER BY 2,1", con)
+            Dim dr As SqlClient.SqlDataReader = cmd.ExecuteReader
+            message = "Ping results:" & vbCrLf
+            message = message & "Date                      IP              Pump/Response Time" & vbCrLf
+            message = message & "----------------------    --------------- ------------------" & vbCrLf
+            While dr.Read
+                message = message & dr.GetString(1).PadRight(21) & dr.GetString(2).PadRight(16) & _
+                    dr.GetString(0).PadRight(16) & vbCrLf
+                'System.Windows.Forms.MessageBox.Show(message)
+            End While
+            dr.Close()
+            con.Close()
+            message = message & vbCrLf & vbCrLf
+            message = message & "Attention OWAM Fuel Interface Admins:" & vbCrLf
+            message = message & "Any pumps appearing 'Offline' indicates a connection issue." & vbCrLf
+            message = message & "Forward to helpdesk and include request for Network to check breakers." & vbCrLf
+            message = message & "If problem persists consult SCI support for service at 800.831.0220 - support@sciww.com" & vbCrLf & vbCrLf
+        Else
+            message = message & vbCrLf & vbCrLf
+            message = message & "Attention OWAM Fuel Interface Admins:" & vbCrLf
+            message = message & "ERROR: There are no pumps listed in the Fleet.Pumps table." & vbCrLf
+            message = message & "Populate the table then retry PingFuelPumps package." & vbCrLf
+        End If
+        dr2.Close()
+        con2.Close()
+        message = message & vbCrLf
+        message = message & cnt.ToString & " pumps read."
+        Dts.Variables("MessageContent").Value = message
+        Dts.TaskResult = ScriptResults.Success
+    End Sub
+End Class]]></ProjectItem>
+              <ProjectItem
+                Name="dts://Scripts/ScriptTask_71ecaaf42f7648398970092f65769e9a/ScriptTask_71ecaaf42f7648398970092f65769e9a.vsaproj"
+                Encoding="Unspecified"><![CDATA[<VisualStudioProject><VisualBasic Version="8.0.50727.762" MVID="{4BF1E6CD-3CCA-4FB8-A58D-968F4A1814E3}" ProjectType="Local" ProductVersion="8.0.50727" SchemaVersion="2.0"><Build><Settings DefaultNamespace="ScriptTask_71ecaaf42f7648398970092f65769e9a" OptionCompare="0" OptionExplicit="1" OptionStrict="1" ProjectName="ScriptTask_71ecaaf42f7648398970092f65769e9a" ReferencePath="C:\Windows\assembly\GAC_MSIL\Microsoft.SqlServer.ScriptTask\9.0.242.0__89845dcd8080cc91\;C:\Windows\assembly\GAC_MSIL\Microsoft.SqlServer.ManagedDTS\9.0.242.0__89845dcd8080cc91\" TreatWarningsAsErrors="false" WarningLevel="1" RootNamespace="ScriptTask_71ecaaf42f7648398970092f65769e9a"><Config Name="Debug" DefineConstants="" DefineDebug="true" DefineTrace="true" DebugSymbols="true" RemoveIntegerChecks="false" /></Settings><References><Reference Name="System" AssemblyName="System" /><Reference Name="System.Data" AssemblyName="System.Data" /></References><Imports><Import Namespace="Microsoft.VisualBasic" /></Imports></Build><Files><Include><File RelPath="ScriptMain" BuildAction="Compile" ItemType="2" /><VSAAppGlobal VSAAppGlobalName="Dts" ItemType="1" VSAAppGlobalType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptObjectModel" /></Include></Files><Folders><Include /></Folders></VisualBasic></VisualStudioProject>]]></ProjectItem>
+              <ProjectItem
+                Name="ScriptTask_71ecaaf42f7648398970092f65769e9a.vbproj"
+                Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="utf-16"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31230589-ec8d-4027-a375-89f2b5cb17e1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>My Project</AppDesignerFolder>
+    <RootNamespace>ScriptTask_71ecaaf42f7648398970092f65769e9a</RootNamespace>
+    <AssemblyName>ScriptTask_71ecaaf42f7648398970092f65769e9a</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="My Project\" />
+  </ItemGroup>
+  <!-- Include the build rules for a VB project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="vb" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptTask" IconIndex=""></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_ST130</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Compile Include="ScriptMain.vb" />
+  </ItemGroup>
+</Project>]]></ProjectItem>
+              <ProjectItem
+                Name="dts://Scripts/ScriptTask_71ecaaf42f7648398970092f65769e9a/ScriptMain.vsaitem"
+                Encoding="Unspecified"><![CDATA[Imports System
+Imports System.Data
+Imports System.Math
+Imports Microsoft.SqlServer.Dts.Runtime
+<Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute> _
+<System.CLSCompliantAttribute(False)> _
+Partial Public Class ScriptMain
+	Inherits Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+
+	Enum ScriptResults
+		Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success
+		Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+	End Enum
+    Public Sub Main()
+        Dim messageSubject As String = "Automatic Notification - General Services Fuel Pump Connection Status"
+        Dim message As String = "General Services Fuel Pump Connection Status" & vbCrLf & vbCrLf & vbCrLf
+        Dts.Variables("MessageSubject").Value = messageSubject
+        Dim cnt As Integer
+        '
+        Dim con2 As New SqlClient.SqlConnection("data source=msb-db-prod; initial catalog=Fleet; integrated security=SSPI;")
+        con2.Open()
+        '
+        Dim cmd2 As New SqlClient.SqlCommand("SELECT * FROM Pumps", con2)
+        Dim dr2 As SqlClient.SqlDataReader = cmd2.ExecuteReader
+        While dr2.Read
+            ' Get number of pumps for next SQL.
+            cnt = cnt + 1
+        End While
+
+        If cnt > 0 Then
+            Dim con As New SqlClient.SqlConnection("data source=msb-db-prod; initial catalog=Fleet; integrated security=SSPI;")
+            con.Open()        '
+            ' This was originally designed to grab the LATEST records.  
+            ' It did not always work so DELETE FROM PUMPIPSTATUS task was added to the project.
+            ' Only the current Pings will ever be in the table.
+            Dim cmd As New SqlClient.SqlCommand("SELECT TOP " & cnt.ToString & " " & _
+                "Pump, CONVERT(CHAR(26),PingDate,120) as PingDate, IP, Status " & _
+                "FROM  PumpIPstatus " & _
+                " GROUP BY Pump, PingDate, IP,  Status " & _
+                " ORDER BY 2,1", con)
+            Dim dr As SqlClient.SqlDataReader = cmd.ExecuteReader
+            message = "Ping results:" & vbCrLf
+            message = message & "Date                      IP              Pump/Response Time" & vbCrLf
+            message = message & "----------------------    --------------- ------------------" & vbCrLf
+            While dr.Read
+                message = message & dr.GetString(1).PadRight(21) & dr.GetString(2).PadRight(16) & _
+                    dr.GetString(0).PadRight(16) & vbCrLf
+                'System.Windows.Forms.MessageBox.Show(message)
+            End While
+            dr.Close()
+            con.Close()
+            message = message & vbCrLf & vbCrLf
+            message = message & "Attention OWAM Fuel Interface Admins:" & vbCrLf
+            message = message & "Any pumps appearing 'Offline' indicates a connection issue." & vbCrLf
+            message = message & "Forward to helpdesk and include request for Network to check breakers." & vbCrLf
+            message = message & "If problem persists consult SCI support for service at 800.831.0220 - support@sciww.com" & vbCrLf & vbCrLf
+        Else
+            message = message & vbCrLf & vbCrLf
+            message = message & "Attention OWAM Fuel Interface Admins:" & vbCrLf
+            message = message & "ERROR: There are no pumps listed in the Fleet.Pumps table." & vbCrLf
+            message = message & "Populate the table then retry PingFuelPumps package." & vbCrLf
+        End If
+        dr2.Close()
+        con2.Close()
+        message = message & vbCrLf
+        message = message & cnt.ToString & " pumps read."
+        Dts.Variables("MessageContent").Value = message
+        Dts.TaskResult = ScriptResults.Success
+    End Sub
+End Class]]></ProjectItem>
+              <ProjectItem
+                Name="Project"
+                Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ScriptTask_71ecaaf42f7648398970092f65769e9a</msb:CodeName>
+		<msb:DisplayName>ScriptTask_71ecaaf42f7648398970092f65769e9a</msb:DisplayName>
+		<msb:ProjectId>{109BEDA9-EF41-4EC3-A281-B7B5E2345A11}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="ScriptTask_71ecaaf42f7648398970092f65769e9a.vbproj"/>
+		<msb:File Include="ScriptMain.vb"/>
+	</msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+              <BinaryItem
+                Name="ScriptTask_71ecaaf42f7648398970092f65769e9a.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAGJYmFoAAAAAAAAAAOAAIiALAVAAABwAAAAGAAAAAAAA0jsA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAIA7AABPAAAAAEAAADADAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAA2BsAAAAgAAAAHAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAADADAAAAQAAAAAQAAAAeAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAIgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAC0
+OwAAAAAAAEgAAAACAAUAVCMAACwYAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKA8AAAoqHgIoEAAACiqmcxEAAAqAAQAABHMSAAAKgAIA
+AARzEwAACoADAAAEcxQAAAqABAAABCoufgEAAARvFQAACioufgIAAARvFgAACioufgMAAARvFwAA
+CioufgQAAARvGAAACioeAigZAAAKKgAAEzAFAN4BAAABAAARcgEAAHAKco4AAHALAigaAAAKbxsA
+AApy9AAAcG8cAAAKBm8dAAAKchIBAHBzHgAACg0Jbx8AAApypwEAcAlzIAAACm8hAAAKEwQrBAgX
+1gwRBG8iAAAKLfMIFj76AAAAchIBAHBzHgAAChMFEQVvHwAACnLPAQBwEgIoIwAACnLnAQBwKCQA
+AAoRBXMgAAAKbyEAAAoTBnLyAgBwCwdyEgMAcCglAAAKCwdykAMAcCglAAAKCytOG40hAAABJRYH
+oiUXEQYXbyYAAAofFW8nAAAKoiUYEQYYbyYAAAofEG8nAAAKoiUZEQYWbyYAAAofEG8nAAAKoiUa
+cg4EAHCiKCgAAAoLEQZvIgAACi2pEQZvKQAAChEFbyoAAAoHchQEAHAoJQAACgsHch4EAHAoJQAA
+CgsHcm4EAHAoJQAACgsHcuoEAHAoJQAACgsHcn0FAHAoJQAACgsrMAdyFAQAcCglAAAKCwdyHgQA
+cCglAAAKCwdyNgYAcCglAAAKCwdysAYAcCglAAAKCxEEbykAAAoJbyoAAAoHcg4EAHAoJQAACgsH
+EgIoIwAACnIeBwBwKCQAAAoLAigaAAAKbxsAAApyOAcAcG8cAAAKB28dAAAKAigaAAAKFm8rAAAK
+KjYCAygsAAAKKC0AAAoqHgIoLgAACiou0AYAAAIoLwAACioeAigwAAAKKhMwAQAUAAAAAgAAEQKM
+BQAAGy0IKAEAACsKKwICCgYqIgP+FQUAABsqHgIoMgAACioAAAATMAIAKAAAAAMAABECezMAAApv
+NAAACgoGjAgAABstEigCAAArCgJ7MwAACgZvNQAACgYqSgIoMgAACgJzNgAACn0zAAAKKgBCU0pC
+AQABAAAAAAAMAAAAdjQuMC4zMDMxOQAAAAAFAGwAAABYBgAAI34AAMQGAAA0BwAAI1N0cmluZ3MA
+AAAA+A0AAFgHAAAjVVMAUBUAABAAAAAjR1VJRAAAAGAVAADMAgAAI0Jsb2IAAAAAAAAAAgAAAVcd
+ogkJDgAAAPoBMwAWAAABAAAAJAAAAAgAAAAIAAAAEgAAAAMAAAA2AAAAAgAAACoAAAADAAAAAgAA
+AAUAAAAFAAAACAAAAAEAAAAGAAAAAwAAAAMAAAACAAAAAAAXBAEAAAAAAAYAsgJCBgYACgNCBgYA
+9QGDBQ8AYgYAAAYAZgJLAwoA3gEzBQoAtAEBBAoACQIBBA4AngHSBQ4AYwWWBQYAfwKDBQ4ANgIb
+Bg4ATgLLAAYAugZQBA4ATwXSBQ4AlwLLAAYAdQFQBAYAIgL8BQ4AAQDFAwoAyQFhBBIA6AKcAwYA
+0gJQBBIAggGcAwYAeANQBBYApwTjBhYAtwTjBgYAVwRQBBIA7wOcAxoAdQZSARoAJQFSARYA5gDj
+BgYAKwBQBAYAcQNQBAYAhgZCBgYALgFQBAYAbAVQBAAAAAAxAAAAAAABAAEAAAAAAJkEAwclAAEA
+AQAAAAAAYQUDBykAAQACAAABEADBBgMHOQABAAMAAQAAAH4EigBdAAUACAAFAQAAxAUAADkABQAK
+AAUBAAAQAAAAOQAFABEAAgEAAKUGAABtAAYAEwAxAPwEFQExANMEHQExAOcEJQExABUFLQEhAPkG
+0wAGBoIANQFWgJUGOAFWgHoBOAFQIAAAAAAGGHYFBgABAFggAAAAAAYYdgUGAAEAYCAAAAAAERh8
+BTwBAQCKIAAAAAATCFQFQAEBAJYgAAAAABMIiQRFAQEAoiAAAAAAEwhLBUoBAQCuIAAAAAATCLQF
+TwEBALogAAAAAAYYdgUGAAEAxCAAAAAABgCEBAYAAQCuIgAAAADGAn8GowABALwiAAAAAMYCGQGo
+AAIAxCIAAAAAgwByAVQBAgDQIgAAAADGAmUDggACANgiAAAAABEAbwBZAQIA+CIAAAAAAQBbAGEB
+AwABIwAAAAAGGHYFBgAEAAwjAAAAAAMIAAFKAAQAQCMAAAAABhh2BQYABAAAAAEAtQQAAAEAEAEA
+AAEAEAEJAHYFAQARAHYFBgAZAHYFCgApAHYFEAAxAHYFFQBBAHYFGwBZAHYFBgBhAHYFBgBpAHYF
+BgCBAHYFIQCRAHYFKQChAHYFEACpAHYFBgCxAHYFKQBJAHYFBgBRAHYFBgAMAHYFBgAUAHYFBgAc
+AHYFBgAkAHYFBgAMAAABSgAUAAABSgAcAAABSgAkAAABSgC5AHYFBgC5AJ0GXQDhAHEGYgDpAEcE
+ZwDxADIDbQDJAHYFEADJAFwEBgD5AHYFcgD5AMUEeQDRAOEAfgABAWUDggAJAbMGhgAJAbMGjQDR
+AG4DkwAJAcsGkwAJAbMGmADRAK4BBgDJAK4BBgDhANQGAQARATwDngBxAH8GowBxABkBqACJAEAB
+rABxAGUDggAhAfEAvABxAHYFBgA0APkG0wA8ACgDSgA8ADID6gA8AHYFBgAIABwACwEIACAAEAEp
+AGMAhQIuAAsAggEuABMAiwEuABsAqgEuACMAswFAADsAEAFAADMA+wFDACsABAJDADMA+wFJAGMA
+lgJjACsABAJjADMA+wFpAGMAqgKAADsAEAGDAEMAEAGDAEsAEAGDACsABAKJAGMAtwKgADsAEAGj
+AGsAEAGjAHMAHQLAADsAEAHDADMA+wHDAFMAIwLgADsAEAHjADMA+wHjAFsAHQJAATMA+wFAATsA
+EAFgATMA+wFgATsAEAGAATMA+wGAATsAEAGgATMA+wGgATsAEAHAATsAEAHgATsAEAEAAjsAEAEA
+AjMA+wEgAjsAEAFAAjsAEAFAAjMA+wFPALQAxwAEAAEABwAFAAAAYwVpAQAAmwRuAQAATwVzAQAA
+xgV4AQAABAF9AQIABAADAAIABQAFAAIABgAHAAIABwAJAAIAEQALAC4ANQA8AEMAuQDMANsA4gAE
+gAAAAAAAAAAAAAAAAAAAAACKAAAABAAAAAAAAAAAAAAA8ADCAAAAAAAEAAAAAAAAAAAAAADwAFAE
+AAAAAAoAAAAAAAAAAAAAAPkAywAAAAAADQAAAAAAAAAAAAAAAgF9AwAAAAAEAAAAAAAAAAAAAADw
+ALYAAAAAAA0AAAAAAAAAAAAAAAIBOgAAAAAABgAEAAcABAAIAAUAAAAQAA4AWQAAABAAHQBZAAAA
+AAAfAFkAYwDCAGMA5QAAAAAAAENvbnRleHRWYWx1ZWAxAFRocmVhZFNhZmVPYmplY3RQcm92aWRl
+cmAxAEludDMyADxNb2R1bGU+AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuTWFuYWdlZERUUwBUAERpc3Bv
+c2VfX0luc3RhbmNlX18AQ3JlYXRlX19JbnN0YW5jZV9fAHZhbHVlX18AU2NyaXB0VGFza183MWVj
+YWFmNDJmNzY0ODM5ODk3MDA5MmY2NTc2OWU5YQBTeXN0ZW0uRGF0YQBtc2NvcmxpYgBNaWNyb3Nv
+ZnQuVmlzdWFsQmFzaWMAUmVhZABTcWxDb21tYW5kAENyZWF0ZUluc3RhbmNlAGdldF9HZXRJbnN0
+YW5jZQBpbnN0YW5jZQBHZXRIYXNoQ29kZQBWYXJpYWJsZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRU
+eXBlRnJvbUhhbmRsZQBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5SdW50aW1lAEdldFR5cGUARmFp
+bHVyZQBWU1RBUlRTY3JpcHRPYmplY3RNb2RlbEJhc2UAQXBwbGljYXRpb25CYXNlAENsb3NlAEVk
+aXRvckJyb3dzYWJsZVN0YXRlAEhlbHBLZXl3b3JkQXR0cmlidXRlAEdlbmVyYXRlZENvZGVBdHRy
+aWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRyaWJ1dGUAQ29tVmlz
+aWJsZUF0dHJpYnV0ZQBTdGFuZGFyZE1vZHVsZUF0dHJpYnV0ZQBIaWRlTW9kdWxlTmFtZUF0dHJp
+YnV0ZQBUYXJnZXRGcmFtZXdvcmtBdHRyaWJ1dGUARGVidWdnZXJIaWRkZW5BdHRyaWJ1dGUATXlH
+cm91cENvbGxlY3Rpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBD
+TFNDb21wbGlhbnRBdHRyaWJ1dGUAU1NJU1NjcmlwdFRhc2tFbnRyeVBvaW50QXR0cmlidXRlAFJ1
+bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAGdldF9WYWx1ZQBzZXRfVmFsdWUAR2V0T2JqZWN0
+VmFsdWUAU3lzdGVtLlJ1bnRpbWUuVmVyc2lvbmluZwBUb1N0cmluZwBHZXRTdHJpbmcATWF0aABN
+aWNyb3NvZnQuU3FsU2VydmVyLlNjcmlwdFRhc2sATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuVGFz
+a3MuU2NyaXB0VGFzawBNaWNyb3NvZnQuVmlzdWFsQmFzaWMuTXlTZXJ2aWNlcy5JbnRlcm5hbABT
+Y3JpcHRPYmplY3RNb2RlbABTeXN0ZW0uQ29tcG9uZW50TW9kZWwAU2NyaXB0VGFza183MWVjYWFm
+NDJmNzY0ODM5ODk3MDA5MmY2NTc2OWU5YS5kbGwAZ2V0X0l0ZW0AU3lzdGVtAEVudW0AT3BlbgBT
+eXN0ZW0uQ29tcG9uZW50TW9kZWwuRGVzaWduAFNjcmlwdE1haW4AZ2V0X0FwcGxpY2F0aW9uAE15
+QXBwbGljYXRpb24AU3FsQ29ubmVjdGlvbgBvAFNxbERhdGFSZWFkZXIARXhlY3V0ZVJlYWRlcgBt
+X0FwcE9iamVjdFByb3ZpZGVyAG1fVXNlck9iamVjdFByb3ZpZGVyAG1fQ29tcHV0ZXJPYmplY3RQ
+cm92aWRlcgBtX015V2ViU2VydmljZXNPYmplY3RQcm92aWRlcgBTeXN0ZW0uQ29kZURvbS5Db21w
+aWxlcgBnZXRfVXNlcgBnZXRfQ29tcHV0ZXIATXlDb21wdXRlcgBBY3RpdmF0b3IALmN0b3IALmNj
+dG9yAFN5c3RlbS5EaWFnbm9zdGljcwBNaWNyb3NvZnQuVmlzdWFsQmFzaWMuRGV2aWNlcwBnZXRf
+V2ViU2VydmljZXMATXlXZWJTZXJ2aWNlcwBNaWNyb3NvZnQuVmlzdWFsQmFzaWMuQXBwbGljYXRp
+b25TZXJ2aWNlcwBTeXN0ZW0uUnVudGltZS5JbnRlcm9wU2VydmljZXMATWljcm9zb2Z0LlZpc3Vh
+bEJhc2ljLkNvbXBpbGVyU2VydmljZXMAU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlcwBE
+ZWJ1Z2dpbmdNb2RlcwBnZXRfVmFyaWFibGVzAEVxdWFscwBSdW50aW1lSGVscGVycwBTdWNjZXNz
+AGdldF9EdHMAU2NyaXB0UmVzdWx0cwBDb25jYXQAT2JqZWN0AE15UHJvamVjdABQYWRSaWdodABz
+ZXRfVGFza1Jlc3VsdABTeXN0ZW0uRGF0YS5TcWxDbGllbnQAbV9Db250ZXh0AFNjcmlwdFRhc2tf
+NzFlY2FhZjQyZjc2NDgzOTg5NzAwOTJmNjU3NjllOWEuTXkAAAAAgItBAHUAdABvAG0AYQB0AGkA
+YwAgAE4AbwB0AGkAZgBpAGMAYQB0AGkAbwBuACAALQAgAEcAZQBuAGUAcgBhAGwAIABTAGUAcgB2
+AGkAYwBlAHMAIABGAHUAZQBsACAAUAB1AG0AcAAgAEMAbwBuAG4AZQBjAHQAaQBvAG4AIABTAHQA
+YQB0AHUAcwABZUcAZQBuAGUAcgBhAGwAIABTAGUAcgB2AGkAYwBlAHMAIABGAHUAZQBsACAAUAB1
+AG0AcAAgAEMAbwBuAG4AZQBjAHQAaQBvAG4AIABTAHQAYQB0AHUAcwANAAoADQAKAA0ACgAAHU0A
+ZQBzAHMAYQBnAGUAUwB1AGIAagBlAGMAdAAAgJNkAGEAdABhACAAcwBvAHUAcgBjAGUAPQBtAHMA
+YgAtAGQAYgAtAHAAcgBvAGQAOwAgAGkAbgBpAHQAaQBhAGwAIABjAGEAdABhAGwAbwBnAD0ARgBs
+AGUAZQB0ADsAIABpAG4AdABlAGcAcgBhAHQAZQBkACAAcwBlAGMAdQByAGkAdAB5AD0AUwBTAFAA
+SQA7AAEnUwBFAEwARQBDAFQAIAAqACAARgBSAE8ATQAgAFAAdQBtAHAAcwAAF1MARQBMAEUAQwBU
+ACAAVABPAFAAIAAAgQkgAFAAdQBtAHAALAAgAEMATwBOAFYARQBSAFQAKABDAEgAQQBSACgAMgA2
+ACkALABQAGkAbgBnAEQAYQB0AGUALAAxADIAMAApACAAYQBzACAAUABpAG4AZwBEAGEAdABlACwA
+IABJAFAALAAgAFMAdABhAHQAdQBzACAARgBSAE8ATQAgACAAUAB1AG0AcABJAFAAcwB0AGEAdAB1
+AHMAIAAgAEcAUgBPAFUAUAAgAEIAWQAgAFAAdQBtAHAALAAgAFAAaQBuAGcARABhAHQAZQAsACAA
+SQBQACwAIAAgAFMAdABhAHQAdQBzACAAIABPAFIARABFAFIAIABCAFkAIAAyACwAMQAAH1AAaQBu
+AGcAIAByAGUAcwB1AGwAdABzADoADQAKAAB9RABhAHQAZQAgACAAIAAgACAAIAAgACAAIAAgACAA
+IAAgACAAIAAgACAAIAAgACAAIAAgAEkAUAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAB1
+AG0AcAAvAFIAZQBzAHAAbwBuAHMAZQAgAFQAaQBtAGUADQAKAAB9LQAtAC0ALQAtAC0ALQAtAC0A
+LQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAgACAAIAAgAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAt
+AC0ALQAtACAALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ADQAKAAEFDQAKAAAJ
+DQAKAA0ACgAAT0EAdAB0AGUAbgB0AGkAbwBuACAATwBXAEEATQAgAEYAdQBlAGwAIABJAG4AdABl
+AHIAZgBhAGMAZQAgAEEAZABtAGkAbgBzADoADQAKAAB7QQBuAHkAIABwAHUAbQBwAHMAIABhAHAA
+cABlAGEAcgBpAG4AZwAgACcATwBmAGYAbABpAG4AZQAnACAAaQBuAGQAaQBjAGEAdABlAHMAIABh
+ACAAYwBvAG4AbgBlAGMAdABpAG8AbgAgAGkAcwBzAHUAZQAuAA0ACgABgJFGAG8AcgB3AGEAcgBk
+ACAAdABvACAAaABlAGwAcABkAGUAcwBrACAAYQBuAGQAIABpAG4AYwBsAHUAZABlACAAcgBlAHEA
+dQBlAHMAdAAgAGYAbwByACAATgBlAHQAdwBvAHIAawAgAHQAbwAgAGMAaABlAGMAawAgAGIAcgBl
+AGEAawBlAHIAcwAuAA0ACgAAgLdJAGYAIABwAHIAbwBiAGwAZQBtACAAcABlAHIAcwBpAHMAdABz
+ACAAYwBvAG4AcwB1AGwAdAAgAFMAQwBJACAAcwB1AHAAcABvAHIAdAAgAGYAbwByACAAcwBlAHIA
+dgBpAGMAZQAgAGEAdAAgADgAMAAwAC4AOAAzADEALgAwADIAMgAwACAALQAgAHMAdQBwAHAAbwBy
+AHQAQABzAGMAaQB3AHcALgBjAG8AbQANAAoADQAKAAF5RQBSAFIATwBSADoAIABUAGgAZQByAGUA
+IABhAHIAZQAgAG4AbwAgAHAAdQBtAHAAcwAgAGwAaQBzAHQAZQBkACAAaQBuACAAdABoAGUAIABG
+AGwAZQBlAHQALgBQAHUAbQBwAHMAIAB0AGEAYgBsAGUALgANAAoAAG1QAG8AcAB1AGwAYQB0AGUA
+IAB0AGgAZQAgAHQAYQBiAGwAZQAgAHQAaABlAG4AIAByAGUAdAByAHkAIABQAGkAbgBnAEYAdQBl
+AGwAUAB1AG0AcABzACAAcABhAGMAawBhAGcAZQAuAA0ACgAAGSAAcAB1AG0AcABzACAAcgBlAGEA
+ZAAuAAAdTQBlAHMAcwBhAGcAZQBDAG8AbgB0AGUAbgB0AAAAAPYt73WIJjFIp+By8IoyoqkABCAB
+AQgDIAABBSABARERBCABAQ4FIAIBDg4FIAEBER0HIAQBDg4ODgQgAQECBhUSHAESDAYVEhwBEggG
+FRIcARI9BhUSHAESGAQgABMADQcHDg4IEmUSaRJlEmkEIAAScQQgABJ1BSABEnkcBCABARwGIAIB
+DhJlBCAAEmkDIAACAyAADgYAAw4ODg4FAAIODg4EIAEOCAUAAQ4dDgQAARwcBCABAhwDIAAIBwAB
+EkURgI0EBwEeAAIeAAUQAQAeAAQKAR4ABAcBEwAGFRIcARMABwYVEk0BEwAGFRJNARMAAhMABAoB
+EwAFIAEBEwAIt3pcVhk04IkIsD9ffxHVCjoIiYRdzYCAzJEEAAAAAAQBAAAABwYVEhwBEgwHBhUS
+HAESCAcGFRIcARI9BwYVEhwBEhgCBggDBhEgAwAAAQQAABIMBAAAEggEAAASPQQAABIYBCAAEkUH
+EAEBHgAeAAcwAQEBEB4ABAgAEgwECAASCAQIABI9BAgAEhgEKAATAAgBAAgAAAAAAB4BAAEAVAIW
+V3JhcE5vbkV4Y2VwdGlvblRocm93cwEIAQACAAAAAABHAQAaLk5FVEZyYW1ld29yayxWZXJzaW9u
+PXY0LjABAFQOFEZyYW1ld29ya0Rpc3BsYXlOYW1lEC5ORVQgRnJhbWV3b3JrIDQIAQABAAAAAAAY
+AQAKTXlUZW1wbGF0ZQgxMS4wLjAuMAAABQEAAAAAYQEANFN5c3RlbS5XZWIuU2VydmljZXMuUHJv
+dG9jb2xzLlNvYXBIdHRwQ2xpZW50UHJvdG9jb2wSQ3JlYXRlX19JbnN0YW5jZV9fE0Rpc3Bvc2Vf
+X0luc3RhbmNlX18AAAAQAQALTXkuQ29tcHV0ZXIAABMBAA5NeS5BcHBsaWNhdGlvbgAADAEAB015
+LlVzZXIAABMBAA5NeS5XZWJTZXJ2aWNlcwAAAKg7AAAAAAAAAAAAAMI7AAAAIAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAC0OwAAAAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAg
+ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB
+ABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAA
+WEAAANQCAAAAAAAAAAAAANQCNAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9
+BO/+AAABAAAAAAAAAAAAAAAAAAAAAAA/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEA
+VgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAA
+AAAAsAQ0AgAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAAAQAgAAAQAwADAAMAAwADAA
+NABiADAAAAAsAAIAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8AbgAAAAAAIAAAADAACAAB
+AEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMAAuADAALgAwAC4AMAAAAIAAMAABAEkAbgB0AGUA
+cgBuAGEAbABOAGEAbQBlAAAAUwBjAHIAaQBwAHQAVABhAHMAawBfADcAMQBlAGMAYQBhAGYANAAy
+AGYANwA2ADQAOAAzADkAOAA5ADcAMAAwADkAMgBmADYANQA3ADYAOQBlADkAYQAuAGQAbABsAAAA
+KAACAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAIAAAAIgAMAABAE8AcgBpAGcAaQBu
+AGEAbABGAGkAbABlAG4AYQBtAGUAAABTAGMAcgBpAHAAdABUAGEAcwBrAF8ANwAxAGUAYwBhAGEA
+ZgA0ADIAZgA3ADYANAA4ADMAOQA4ADkANwAwADAAOQAyAGYANgA1ADcANgA5AGUAOQBhAC4AZABs
+AGwAAAA0AAgAAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBvAG4AAAAwAC4AMAAuADAALgAwAAAA
+OAAIAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBpAG8AbgAAADAALgAwAC4AMAAuADAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMAAAA1DsAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
+            </ScriptProject>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\Send Mail Task"
+          DTS:CreationName="Microsoft.SendMailTask"
+          DTS:Description="Send Mail Task"
+          DTS:DTSID="{B11E7226-15B0-4064-A22E-0B080550ABD3}"
+          DTS:ExecutableType="Microsoft.SendMailTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Send Mail Task"
+          DTS:TaskContact="Send Mail Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables>
+            <DTS:Variable
+              DTS:CreationName=""
+              DTS:DTSID="{25F22618-6FEB-465B-B2BC-42644494C424}"
+              DTS:IncludeInDebugDump="2345"
+              DTS:Namespace="User"
+              DTS:ObjectName="MessageTo">
+              <DTS:VariableValue
+                DTS:DataType="8">OWAMFuelInterfaceAdmins@myclearwater.com</DTS:VariableValue>
+            </DTS:Variable>
+          </DTS:Variables>
+          <DTS:PropertyExpression
+            DTS:Name="Subject">@[User::MessageSubject]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="ToLine">@[User::MessageTo]</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SendMailTask:SendMailTaskData
+              SendMailTask:SMTPServer="{4CEB676B-E9B2-40EF-8E3A-BD6395777EAC}"
+              SendMailTask:From="helpdesk@myclearwater.com"
+              SendMailTask:To="OWAMFuelInterfaceAdmins@myclearwater.com"
+              SendMailTask:Priority="High"
+              SendMailTask:MessageSourceType="Variable"
+              SendMailTask:MessageSource="User::MessageContent" xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Sequence Container.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{4D2C90C9-64C3-404D-8D3A-70AFFE4C15B4}"
+          DTS:From="Package\Sequence Container\Build Email"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Sequence Container\Send Mail Task" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{92A4F225-FB45-41C1-9201-5D39B89F5571}"
+      DTS:From="Package\Ping Fuel Pumps"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{95A89EE5-88CA-4E21-8E39-EB8F72B6316E}"
+      DTS:From="Package\Delete PumpIPStatus"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Ping Fuel Pumps" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="141,35"
+          Id="Package\Delete PumpIPStatus"
+          TopLeft="18.5943396226415,5.5" />
+        <NodeLayout
+          Size="134,36"
+          Id="Package\Ping Fuel Pumps"
+          TopLeft="19.311320754717,88.1792452830189" />
+        <NodeLayout
+          Size="109,35"
+          Id="Package\Sequence Container\Build Email"
+          TopLeft="44,-0.320754716981133" />
+        <NodeLayout
+          Size="109,35"
+          Id="Package\Sequence Container\Send Mail Task"
+          TopLeft="45.5849056603774,65.9056603773585" />
+        <EdgeLayout
+          Id="Package\Sequence Container.PrecedenceConstraints[Constraint]"
+          TopLeft="98.3018867924528,34.811320754717">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="1.58490566037736,31.0943396226415"
+              Start="0,0"
+              End="1.58490566037736,23.5943396226415">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5471698113208" />
+                  <mssgle:LineSegment
+                    End="1.58490566037736,15.5471698113208" />
+                  <mssgle:LineSegment
+                    End="1.58490566037736,23.5943396226415" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="188,130"
+          Size="188,166"
+          Id="Package\Sequence Container"
+          TopLeft="5.5,184.103773584906" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="86.3679245283019,124.103773584906">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="12.9811320754717,60"
+              Start="0,0"
+              End="12.9811320754717,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30" />
+                  <mssgle:LineSegment
+                    End="12.9811320754717,30" />
+                  <mssgle:LineSegment
+                    End="12.9811320754717,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="88.8584905660377,40.6320754716981">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-2.49056603773585,47.5471698113207"
+              Start="0,0"
+              End="-2.49056603773585,40.0471698113207">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.7735849056604" />
+                  <mssgle:LineSegment
+                    End="-2.49056603773585,23.7735849056604" />
+                  <mssgle:LineSegment
+                    End="-2.49056603773585,40.0471698113207" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Ping Fuel Pumps">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="109,37"
+          Id="Package\Ping Fuel Pumps\Script Component"
+          TopLeft="56.5943396226415,195.198113207547" />
+        <NodeLayout
+          Size="109,35"
+          Id="Package\Ping Fuel Pumps\OLE DB Source"
+          TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="109,35"
+          Id="Package\Ping Fuel Pumps\OLE DB Command"
+          TopLeft="24.3679245283019,284.971698113208" />
+        <NodeLayout
+          Size="109,35"
+          Id="Package\Ping Fuel Pumps\Data Conversion"
+          TopLeft="16.3679245283019,109.801886792453" />
+        <EdgeLayout
+          Id="Package\Ping Fuel Pumps.Paths[Output 0]"
+          TopLeft="110.896226415094,231.915094339623">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-32.2264150943396,53.0566037735849"
+              Start="0,0"
+              End="-32.2264150943396,45.5566037735849">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5283018867925" />
+                  <mssgle:LineSegment
+                    End="-32.2264150943396,26.5283018867925" />
+                  <mssgle:LineSegment
+                    End="-32.2264150943396,45.5566037735849" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Ping Fuel Pumps.Paths[OLE DB Source Output]"
+          TopLeft="59.8018867924528,40.6320754716981">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="10.8679245283019,69.1698113207547"
+              Start="0,0"
+              End="10.8679245283019,61.6698113207547">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.6037735849057" />
+                  <mssgle:LineSegment
+                    End="10.8679245283019,34.6037735849057" />
+                  <mssgle:LineSegment
+                    End="10.8679245283019,61.6698113207547" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Ping Fuel Pumps.Paths[Data Conversion Output]"
+          TopLeft="70.6698113207547,144.933962264151">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="40.2264150943396,50.2641509433962"
+              Start="0,0"
+              End="40.2264150943396,42.7641509433962">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.1320754716981" />
+                  <mssgle:LineSegment
+                    End="40.2264150943396,25.1320754716981" />
+                  <mssgle:LineSegment
+                    End="40.2264150943396,42.7641509433962" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Ping Fuel Pumps\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
